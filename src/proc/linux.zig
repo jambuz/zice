@@ -23,10 +23,8 @@ pub const Process = struct {
                 entry.name.len == 0 or
                 !std.ascii.isDigit(entry.name[0])) continue;
 
-            if (std.fmt.parseInt(linux.pid_t, entry.name, 10)) |tid| {
-                threads.appendAssumeCapacity(tid);
-                if (threads.len == threads.capacity()) break;
-            } else |_| continue;
+            const tid = try std.fmt.parseInt(linux.pid_t, entry.name, 10);
+            threads.appendAssumeCapacity(tid);
         }
 
         return threads;
