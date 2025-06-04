@@ -1,0 +1,14 @@
+.{
+    .name = .zice,
+    .version = "0.0.0",
+    .fingerprint = 0x11c8c2f878c55947,
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{},
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "README.md",
+    },
+}
