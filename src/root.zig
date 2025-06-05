@@ -13,3 +13,15 @@ pub const Process = switch (builtin.os.tag) {
     .linux => @import("proc/linux.zig").Process,
     else => @compileError("Unsupported OS"),
 };
+
+test "get regs of tids" {
+    const std = @import("std");
+    const p = Process.init(null);
+
+    const threads = try p.enumerateThreads();
+    for (threads.constSlice()) |t| {
+        const tracer = Tracer.init(t);
+        const regs = try tracer.follow();
+        std.debug.print("regs: of {d}: {}\n", .{ t, regs });
+    }
+}
