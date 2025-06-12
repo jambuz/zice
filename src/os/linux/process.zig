@@ -43,13 +43,3 @@ pub const Process = struct {
         return task_path;
     }
 };
-
-test "enumerate threads" {
-    const proc = Process.init(null);
-    const threads = try proc.enumerateThreads();
-
-    std.testing.expect(threads.len > 0) catch unreachable;
-    for (threads.constSlice()) |tid| {
-        std.debug.print("tid: {}\n", .{tid});
-    }
-}

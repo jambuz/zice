@@ -12,7 +12,7 @@ pub const Tracer = struct {
         return Self{ .tid = tid };
     }
 
-    pub fn follow(self: Self) !linux.getcontext(2) {
+    pub fn follow(self: Self) !void {
         if (linux.ptrace(linux.PTRACE.ATTACH, self.tid, 0, 0, 0) < 0) return error.FailedToAttach;
         // Wait for stop
         var status: u32 = 0;
@@ -20,18 +20,5 @@ pub const Tracer = struct {
             _ = linux.ptrace(linux.PTRACE.DETACH, self.tid, 0, 0, 0);
             return error.WaitFailed;
         }
-
-        linux.REG.EIP;
-        // Get registers
-        var regs: UserRegs = undefined;
-        if (linux.ptrace(linux.PTRACE.GETREGS, self.tid, 0, @intFromPtr(&regs), 0) < 0) {
-            _ = linux.ptrace(linux.PTRACE.DETACH, self.tid, 0, 0, 0);
-            return error.GetRegsFailed;
-        }
-
-        // Detach
-        _ = linux.ptrace(linux.PTRACE.DETACH, self.tid, 0, 0, 0);
-
-        return regs;
     }
 };

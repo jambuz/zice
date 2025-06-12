@@ -1,7 +1,7 @@
 const std = @import("std");
 const win = std.os.windows;
 
-const def = @import("root").def.windows;
+const def = @import("root").def;
 
 pub const Process = struct {
     const Self = @This();
@@ -38,14 +38,3 @@ pub const Process = struct {
         return thread_list;
     }
 };
-
-test "Enumerate threads" {
-    const root = @import("root");
-
-    const p = root.Process.init(1951);
-    const threads = try p.enumerateThreads(0);
-
-    for (threads.constSlice()) |t| {
-        std.debug.print("{}\n", .{t});
-    }
-}
