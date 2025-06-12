@@ -2,17 +2,15 @@ const std = @import("std");
 const linux = std.os.linux;
 
 pub const Tracer = struct {
-    const Self = @This();
-
     tid: linux.pid_t,
 
     /// Initialize the tracer
     /// @1 Process Handle of target
-    pub fn init(tid: linux.pid_t) Self {
-        return Self{ .tid = tid };
+    pub fn init(tid: linux.pid_t) Tracer {
+        return Tracer{ .tid = tid };
     }
 
-    pub fn follow(self: Self) !void {
+    pub fn follow(self: Tracer) !void {
         if (linux.ptrace(linux.PTRACE.ATTACH, self.tid, 0, 0, 0) < 0) return error.FailedToAttach;
         // Wait for stop
         var status: u32 = 0;

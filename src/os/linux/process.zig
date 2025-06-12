@@ -2,15 +2,13 @@ const std = @import("std");
 const linux = std.os.linux;
 
 pub const Process = struct {
-    const Self = @This();
-
     pid: ?linux.pid_t,
 
-    pub fn init(pid: ?linux.pid_t) Self {
+    pub fn init(pid: ?linux.pid_t) Process {
         return .{ .pid = pid };
     }
 
-    pub fn enumerateThreads(self: Self) !std.BoundedArray(linux.pid_t, 32) {
+    pub fn enumerateThreads(self: Process) !std.BoundedArray(linux.pid_t, 32) {
         var threads = try std.BoundedArray(linux.pid_t, 32).init(0);
 
         const task_dir_path = try self.getTaskDirPath();
@@ -30,7 +28,7 @@ pub const Process = struct {
         return threads;
     }
 
-    inline fn getTaskDirPath(self: Self) ![]const u8 {
+    inline fn getTaskDirPath(self: Process) ![]const u8 {
         const task_path = blk: {
             if (self.pid) |p| {
                 var buf: [64]u8 = undefined;

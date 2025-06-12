@@ -1,23 +1,21 @@
 const std = @import("std");
 const win = std.os.windows;
 
-const def = @import("root").def.windows;
+const def = @import("def.zig");
 
 pub const Tracer = struct {
-    const Self = @This();
-
     /// Initialize the tracer
     /// @1 Process Handle of target
-    pub fn init() Self {}
+    pub fn init() Tracer {}
 
     /// Trace a thread's execution
     /// 1. Check Thread's RIP
-    pub fn follow(self: Self, thread_handle: win.HANDLE) !void {
+    pub fn follow(self: Tracer, thread_handle: win.HANDLE) !void {
         _ = self;
         _ = thread_handle;
     }
 
-    pub fn deinit(self: Self) void {
+    pub fn deinit(self: Tracer) void {
         _ = self;
     }
 };
