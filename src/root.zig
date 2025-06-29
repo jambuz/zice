@@ -1,23 +1,22 @@
 pub const builtin = @import("builtin");
 
 pub const Tracer = switch (builtin.os.tag) {
-    .windows => @import("os/win32/tracer.zig").Tracer,
-    .linux => @import("os/linux/tracer.zig").Tracer,
+    .windows => @import("os/win32/tracer.zig"),
+    .linux => @import("os/linux/tracer.zig"),
     else => @compileError("Unsupported OS"),
 };
 
 pub const Process = switch (builtin.os.tag) {
-    .windows => @import("os/win32/process.zig").Process,
-    .linux => @import("os/linux/process.zig").Process,
+    .windows => @import("os/win32/process.zig"),
+    .linux => @import("os/linux/process.zig"),
     else => @compileError("Unsupported OS"),
 };
 
-test "get regs of tids" {
+test "tids" {
     const std = @import("std");
-    const p = Process.init(null);
+    const threads = try Process.enumerateThreads(1753);
 
-    const threads = try p.enumerateThreads();
     for (threads.constSlice()) |t| {
-        std.debug.print("Thread ID {d}\n", .{t});
+        std.debug.print("TID: {d}\n", .{t});
     }
 }
