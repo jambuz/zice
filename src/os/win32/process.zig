@@ -12,7 +12,7 @@ pub fn enumerateThreads(process_handle: win.HANDLE) !std.BoundedArray(win.HANDLE
         const status = def.NtGetNextThread(
             process_handle,
             current,
-            win.THREAD_ALL_ACCESS,
+            def.THREAD_QUERY_LIMITED_INFORMATION,
             0,
             0,
             &next,

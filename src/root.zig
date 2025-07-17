@@ -1,4 +1,4 @@
-pub const builtin = @import("builtin");
+const builtin = @import("builtin");
 
 pub const Tracer = switch (builtin.os.tag) {
     .windows => @import("os/win32/tracer.zig"),
